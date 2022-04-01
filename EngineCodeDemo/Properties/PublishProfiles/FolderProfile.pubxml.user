@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\ASPNETCore\EngineCodeDemo\EngineCodeDemo\bin\Release\net6.0\browser-wasm\publish\</_PublishTargetUrl>
+    <History>True|2022-04-01T14:56:45.7413040Z;True|2022-04-01T20:55:14.9840925+08:00;True|2022-04-01T20:10:21.8905713+08:00;</History>
+  </PropertyGroup>
+</Project>
