@@ -1,17 +1,48 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    <div class="container">
+        <nav class="navbar navbar-expand-sm navbar-light mt-2" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">工程规范</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">关于</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">主页</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="Ecode">规范</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav my-1 my-lg-0">                     
+                        <li class="nav-item ">
+                            <a class="nav-link" href="Register">注册</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="Login">登录</a>
+                        </li>
+                        <li class="nav-item ">
+                            <a class="nav-link" href="Logout">退出</a>
+                        </li>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+                    </ul> 
+                </div>
+            </div>
+        </nav>
+        <div class="content px-4" style="height:100%">
             @Body
-        </article>
-    </main>
+        </div>
+        <footer class="border-top footer text-muted my-0">
+            <div class="container">
+                &copy; 2021 - EngineCode - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+    
 </div>

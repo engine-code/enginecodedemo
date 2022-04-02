@@ -1,0 +1,115 @@
+﻿@page "/Ecode"
+@inject HttpClient Http
+@layout MainLayout
+@using System.Security.Claims
+<div class="text-center h4">工程规范一览表 </div>
+
+
+{
+    <p>@messgae</p>
+    <AuthorizeView Roles="Admin">
+        <div class="text-right">
+            <a href="/EcCreate">规范新建</a>
+            <a href="/EcUserManager">用户管理</a>
+        </div>
+    </AuthorizeView>
+    <AuthorizeView Roles="Architecture,Structure,Water,Electrical,Ventilation">
+        <div class="text-right">
+            <a href="/EcUserManager">用户信息修改</a>
+        </div>
+    </AuthorizeView>
+        <table class="table border-bottom">
+            <thead>
+                <tr>
+                    <th>规范编号</th>
+                    <th>规范名称</th>
+                    <AuthorizeView Roles="Architecture,Structure,Water,Electrical,Ventilation">
+                        <th></th>
+                    </AuthorizeView>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var engineCode in engineCodes)
+                {
+                    <tr>
+                        <td>@engineCode.CodeNo</td>
+                        <td>@engineCode.Name</td>
+                        <td>
+                            <AuthorizeView Roles="Admin,Architecture,Structure,Water,Electrical,Ventilation">
+                                <a href="/EcDetail/@engineCode.CodeNo">详情</a>
+                            </AuthorizeView>                            
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        }
+
+        @*code {
+            /*
+            [CascadingParameter]
+            private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private string userId;
+        private string role;
+        private string userName;
+        string isAdmindis = "d-none";
+        string isOtherdis = "d-none";
+
+        private EngineCodeModel[] engineCodes;
+        public string messgae = "";
+        protected override async Task OnInitializedAsync()
+        {
+            var authState = await authenticationStateTask;
+            var user = authState.User;
+            userName = user.Identity.Name;
+            var roleList = new List<string> { "Architecture", "Structure", "Water", "Electrical", "Ventilation" };
+            if (!string.IsNullOrEmpty(userName))
+            {
+                userId = user.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+                role = user.Claims.First(c => c.Type == ClaimTypes.Role).Value;
+                isAdmindis = role == "Admin" ? null : "d-none";
+                isOtherdis = roleList.Contains(role) ? null : "d-none";
+            }
+
+            engineCodes = await Http.GetFromJsonAsync<EngineCodeModel[]>($"{Program.ServerUrl}/api/EngineCodeModels");
+        }
+
+        public async Task DeleteEngineCode(string codeNo)
+        {
+
+            messgae = codeNo;
+            string tmp = "";
+            var result = await Http.DeleteAsync($"{ Program.ServerUrl}/api/CoverPages/{codeNo}");
+            if (result.IsSuccessStatusCode)
+                tmp = "封面已删除！ ";
+            else
+                tmp = "封面未找到！ ";
+            messgae += tmp;
+            result = await Http.DeleteAsync($"{ Program.ServerUrl}/api/Announcements/{codeNo}");
+            if (result.IsSuccessStatusCode)
+                tmp = "公告已删除！ ";
+            else
+                tmp = "公告未找到！ ";
+            messgae += tmp;
+            result = await Http.DeleteAsync($"{ Program.ServerUrl}/api/Forewords/{codeNo}");
+            if (result.IsSuccessStatusCode)
+                tmp = "前言已删除！ ";
+            else
+                tmp = "前言未找到！ ";
+            messgae += tmp;
+            result = await Http.DeleteAsync($"{ Program.ServerUrl}/api/Clauses/{codeNo}");
+            if (result.IsSuccessStatusCode)
+                tmp = "所有条款已删除！ ";
+            else
+                tmp = "条款未找到！ ";
+            messgae += tmp;
+
+            result = await Http.DeleteAsync($"{ Program.ServerUrl}/api/EngineCodeModels/{codeNo}");
+            if (result.IsSuccessStatusCode)
+            {
+                engineCodes = await Http.GetFromJsonAsync<EngineCodeModel[]>($"{Program.ServerUrl}/api/EngineCodeModels");
+            }
+        }
+        */
+        }*@
