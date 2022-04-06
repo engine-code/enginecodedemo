@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EngineCodeDemo.Shared
+namespace enginecodedemo.Shared
 {
     //规范或标准封面
     public class Coverpage

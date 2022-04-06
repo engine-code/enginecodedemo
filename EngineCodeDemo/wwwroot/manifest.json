@@ -1,6 +1,6 @@
 {
-  "name": "EngineCodeDemo",
-  "short_name": "EngineCodeDemo",
+  "name": "enginecodedemo",
+  "short_name": "enginecodedemo",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
