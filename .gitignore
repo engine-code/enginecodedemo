@@ -1,5 +1,12 @@
+<<<<<<< HEAD
 enginecodedemo/bin/
 enginecodedemo/obj/
 /.vs/
 enginecodedemo/appsettings.json
+=======
+EngineCodeDemo/bin/
+EngineCodeDemo/obj/
+/.vs/
+EngineCodeDemo/appsettings.json
+>>>>>>> fc5058922eaf0120ea12ae26498cb849fe387c98
 
