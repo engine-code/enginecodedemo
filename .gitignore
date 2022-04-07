@@ -1,0 +1,7 @@
+EngineCode/bin/
+EngineCode/obj/
+EngineCode.Shared/bin/
+EngineCode.Shared/obj/
+/.vs/
+EngineCode/appsettings.json
+
