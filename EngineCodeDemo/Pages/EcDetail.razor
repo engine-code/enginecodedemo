@@ -1,4 +1,4 @@
-﻿@page "/EcDetail/{CodeNo}"  
+﻿@page "/enginecodedemo/EcDetail/{CodeNo}"  
 @inject HttpClient Http
 @layout EcDetailLayout
 @using System.Text.RegularExpressions
@@ -426,21 +426,23 @@
                     }
                     foreach (var clause in clauseList)
                     {
-
-                        string[] idArr = clause.ClauseNo.Split('.');
-                        string imgName="images/caret-down-fill.svg";
+                      string iconName = "images/caret-down-fill.svg";
+                            
+                      string[] idArr = clause.ClauseNo.Split('.');
+                            
+                        
                         string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
                         MarkupString resultTxt1 = new MarkupString(clause.Content);
                         bool hasExplaination = clause.Explanation.Length < 2 ? false : true;
-                        bool isUp = true;                        
+                       
                         MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
                         <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">  
-                        @{
-                           
+                        @{                            
                             if(hasExplaination)
-                            {
-                                <img src=@imgName width="16" height="16"  data-bs-toggle="collapse" data-bs-target="#@collapseId" @onclick="@(e=>isUp=!isUp)"> @resultTxt1
-                                imgName = isUp ? "images/caret-down-fill.svg" : "images/caret-up-fill.svg";
+                            {                                 
+                                <img src=@iconName width="16" height="16" data-bs-toggle="collapse" data-bs-target="#@collapseId" 
+                                @onclick="@(e=> iconName= iconName=="images/caret-down-fill.svg" ? "images/caret-up-fill.svg":"images/caret-down-fill.svg")">@resultTxt1                 
+                                
                             }                            
                             else
                             {
@@ -483,7 +485,7 @@
     public string isClauseDisplay;
     public string isCompulsiveClauseDisplay;
     public Dictionary<string, string> imageContents = new Dictionary<string, string>();
-    public IList<Clause> clauseList = new List<Clause>();
+    public IList<Clause> clauseList = new List<Clause>();   
     protected override async Task OnInitializedAsync()
     {       
         EngineCodeModel[] engineCodeModels;
@@ -517,7 +519,7 @@
         engineCode.Announcement=announcements.FirstOrDefault(a=>a.CodeNo==CodeNo); 
         announ=engineCode.Announcement;     
 
-     
+
         //条款
         Clause[] clauseArray;
         Dictionary<string, string> speciality = new Dictionary<string, string>();
@@ -531,7 +533,7 @@
         engineCode.Clauses = clauseArray.Where(a=>a.CodeNo==CodeNo).ToList();
 
         clauses = EngineCodeModel.OrderedByClauseNo(engineCode.Clauses).ToList();
-        
+
         foreach (var item in clauses)
         {
             item.Specility = speciality[item.Specility];
@@ -557,8 +559,10 @@
         isForewordDisplay = "d-none";
         isClauseDisplay = "d-none";
         isCompulsiveClauseDisplay = "d-none";
-                    
-                }
+
+    }
+
+  
 
                 protected void DisplayCoverPage()
                 {
