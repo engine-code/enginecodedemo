@@ -422,28 +422,40 @@
                                             clauseList.Remove(clauseList[0]);//删除 "附录A"
                                         }
 
-                                    </div>
-                                }
-                                foreach (var clause in clauseList)
-                                {
+                        </div>
+                    }
+                    foreach (var clause in clauseList)
+                    {
 
-                                    string[] idArr = clause.ClauseNo.Split('.');
-
-                                    string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
-                                    MarkupString resultTxt1 = new MarkupString(clause.Content);
-                                    string hasExplaination = clause.Explanation.Length < 2 ? "hidden" : "visible";
-                                    MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
-                                    <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">
-                                        <svg data-bs-toggle="collapse" data-bs-target="#@collapseId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
-                                            <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
-                                        </svg>@resultTxt1
-                                    </div>
-                                     if(hasExplaination=="visible")
-                                    {
-                                        <div id="@collapseId" style="text-align: left; white-space: pre-wrap" class="collapse shadow px-4 text-info">
-                                            @resultTxt2
-                                        </div>       
-                                    }
+                        string[] idArr = clause.ClauseNo.Split('.');
+                        string imgName="images/caret-down-fill.svg";
+                        string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
+                        MarkupString resultTxt1 = new MarkupString(clause.Content);
+                        bool hasExplaination = clause.Explanation.Length < 2 ? false : true;
+                        bool isUp = true;                        
+                        MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
+                        <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">  
+                        @{
+                           
+                            if(hasExplaination)
+                            {
+                                <img src=@imgName width="16" height="16"  data-bs-toggle="collapse" data-bs-target="#@collapseId" @onclick="@(e=>isUp=!isUp)"> @resultTxt1
+                                imgName = isUp ? "images/caret-down-fill.svg" : "images/caret-up-fill.svg";
+                            }                            
+                            else
+                            {
+                                <img src="images/caret-down.svg" width="16" height="16"> @resultTxt1 
+                            }        
+                        
+                        }
+                                      
+                        </div>
+                        if(hasExplaination)
+                          {
+                             <div id="@collapseId" style="text-align: left; white-space: pre-wrap" class="collapse shadow px-4 text-info">
+                             @resultTxt2
+                             </div>       
+                           }
                                     
                                     <br />
                                 }
