@@ -425,28 +425,27 @@
                         </div>
                     }
                     foreach (var clause in clauseList)
-                    {
-                      string iconName = "images/caret-down-fill.svg";
-                            
-                      string[] idArr = clause.ClauseNo.Split('.');
-                            
-                        
+                    {                 
+
+                        string[] idArr = clause.ClauseNo.Split('.');
                         string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
                         MarkupString resultTxt1 = new MarkupString(clause.Content);
                         bool hasExplaination = clause.Explanation.Length < 2 ? false : true;
-                       
+                        
                         MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
                         <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">  
-                        @{                            
-                            if(hasExplaination)
-                            {                                 
-                                <img src=@iconName width="16" height="16" data-bs-toggle="collapse" data-bs-target="#@collapseId" 
-                                @onclick="@(e=> iconName= iconName=="images/caret-down-fill.svg" ? "images/caret-up-fill.svg":"images/caret-down-fill.svg")">@resultTxt1                 
+                            @{
+                                if(hasExplaination)
+                                {                                   
+                                    if(!iconDic.Keys.Contains(collapseId))                                              
+                                        iconDic.Add(collapseId, "images/chevron-right.svg");                                  
+                                    <img src=@iconDic[collapseId] width="16" height="16" data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                    @onclick="@(e=>iconDic[collapseId]= iconDic[collapseId]=="images/chevron-right.svg" ? "images/chevron-down.svg":"images/chevron-right.svg")">@resultTxt1               
                                 
-                            }                            
+                            }                          
                             else
                             {
-                                <img src="images/caret-down.svg" width="16" height="16"> @resultTxt1 
+                                <img src="images/chevron-down.svg" width="16" height="16" style="visibility:hidden" > @resultTxt1 //class="visibility-hidden"
                             }        
                         
                         }
@@ -484,8 +483,9 @@
     public string isForewordDisplay;
     public string isClauseDisplay;
     public string isCompulsiveClauseDisplay;
-    public Dictionary<string, string> imageContents = new Dictionary<string, string>();
-    public IList<Clause> clauseList = new List<Clause>();   
+    public Dictionary<string, string> imageContents = new Dictionary<string, string>();//条款前图标 key=collapsedId value="images/cheverot-right.svg"
+    public IList<Clause> clauseList = new List<Clause>();  
+    public Dictionary<string, string> iconDic = new Dictionary<string, string>();
     protected override async Task OnInitializedAsync()
     {       
         EngineCodeModel[] engineCodeModels;
