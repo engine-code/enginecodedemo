@@ -430,8 +430,7 @@
                         string[] idArr = clause.ClauseNo.Split('.');
                         string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
                         MarkupString resultTxt1 = new MarkupString(clause.Content);
-                        bool hasExplaination = clause.Explanation.Length < 2 ? false : true;
-                        
+                        bool hasExplaination = clause.Explanation.Length < 2 ? false : true;                        
                         MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
                         <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">  
                             @{
