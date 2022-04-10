@@ -1,0 +1,30 @@
+﻿@page "/DataTool"
+@inject HttpClient Http
+@using ProtoBuf
+@using ProtoBuf.Meta
+@using ProtoBuf.Serializers
+
+<PageTitle>数据转换</PageTitle>
+
+<h1>数据转换</h1>
+
+
+
+<button class="btn btn-primary" @onclick="DataToProtobuf">Click me</button>
+
+@code {
+    Clause[] clauses ;
+
+
+    private async void DataToProtobuf()
+    {
+        clauses = await Http.GetFromJsonAsync<Clause[]>("EcData/Clause.json");
+        using (var file = File.Create("EcData/Clause.proto"))
+        {
+            var tm = RuntimeTypeModel.Create();
+            Stream dest = new MemoryStream();
+            tm.Serialize(file, clauses);
+
+        }
+    }
+}

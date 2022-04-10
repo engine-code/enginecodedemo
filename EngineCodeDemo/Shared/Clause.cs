@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-
+using ProtoBuf;
 namespace enginecodedemo.Shared
 {
+    [ProtoContract]
     public class Clause
     {
-        [Key]
+        
         public string CodeNo { get; set; }       
         public string ClauseNo { get; set; }
         public string Content { get; set; }
