@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+
 using System.Linq;
 using System.Threading.Tasks;
 using ProtoBuf;
@@ -9,14 +9,18 @@ namespace enginecodedemo.Shared
     [ProtoContract]
     public class Clause
     {
-        
-        public string CodeNo { get; set; }       
+        [ProtoMember(1)]
+        public string CodeNo { get; set; }
+        [ProtoMember(2)]
         public string ClauseNo { get; set; }
+        [ProtoMember(3)]
         public string Content { get; set; }
+        [ProtoMember(4)]
         public string Explanation { get; set; }
+        [ProtoMember(5)]
         public string Specility { get; set; }        
     }
-    
+    /*
         
     public enum SpecialityEnum
     {
@@ -32,5 +36,5 @@ namespace enginecodedemo.Shared
         Ventilation,
         [Display(Name = "通用")]
         All
-    }
+    }*/
 }

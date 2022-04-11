@@ -1,11 +1,4 @@
 ﻿@page "/"
-@inherits MathJaxContentComponent
-@inject HttpClient Http
-@using ProtoBuf
-@using ProtoBuf.Meta
-@using ProtoBuf.Serializers
-
-<button class="btn btn-primary" @onclick="DataToProtobuf">Click me</button>
 
 <PageTitle>网站介绍</PageTitle>
   <div class="d-block text-primary py-0 my-0">
@@ -18,24 +11,3 @@
   <p>5 在移动终端上，点击上方三横按钮，即可收放导航 </p>
   </div> 
 <SurveyPrompt Title="工程规范" />
-@code {
-    Announcement[] anns ;
-
-
-    private async void DataToProtobuf()
-    {
-        anns = await Http.GetFromJsonAsync<Announcement[]>("EcData/Announcement.json");
-        using (var file = File.Create("EcData/person.bin"))
-        {
-            var tm = RuntimeTypeModel.Create();
-    //        Stream dest = new MemoryStream(1024*1024);
-            tm.Serialize(file, anns);
-           
-        }
-    }
-
-
-
-   
-}
-}

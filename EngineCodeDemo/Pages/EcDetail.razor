@@ -488,19 +488,22 @@
     protected override async Task OnInitializedAsync()
     {       
         EngineCodeModel[] engineCodeModels;
-        engineCodeModels = await Http.GetFromJsonAsync<EngineCodeModel[]>("EcData/EngineCode.json");
+        var file = await Http.GetStreamAsync("EcData/EngineCode.bin");
+        engineCodeModels = Serializer.Deserialize<EngineCodeModel[]>(file);
         engineCode = engineCodeModels.FirstOrDefault(a=>a.CodeNo==CodeNo);        
 
         //封面
         Coverpage[] coverpages;
-        coverpages = await Http.GetFromJsonAsync<Coverpage[]>("EcData/Coverpage.json");
+        file = await Http.GetStreamAsync("EcData/Coverpage.bin");
+        coverpages =Serializer.Deserialize<Coverpage[]>(file);
         engineCode.Coverpage = coverpages.FirstOrDefault(a=>a.CodeNo==CodeNo);
         coverpage = engineCode.Coverpage;
 
 
         //前言
         Foreword[] forewords;
-        forewords =await Http.GetFromJsonAsync<Foreword[]>("EcData/Foreword.json");
+        file =await Http.GetStreamAsync("EcData/Foreword.bin");
+        forewords =Serializer.Deserialize<Foreword[]>(file);
         engineCode.Foreword = forewords.FirstOrDefault(a=>a.CodeNo==CodeNo);
         foreword.Accordingto = " " + engineCode.Foreword.Accordingto;
         foreword.Process = " " + engineCode.Foreword.Process;
@@ -514,7 +517,9 @@
 
         //公告
         Announcement[] announcements;
-        announcements = await Http.GetFromJsonAsync<Announcement[]>("EcData/Announcement.json");
+
+        file = await Http.GetStreamAsync("EcData/Announcement.bin");
+        announcements = Serializer.Deserialize<Announcement[]>(file);
         engineCode.Announcement=announcements.FirstOrDefault(a=>a.CodeNo==CodeNo); 
         announ=engineCode.Announcement;     
 
@@ -528,7 +533,9 @@
         speciality.Add("3", "Water");
         speciality.Add("4", "Ventilation");
         speciality.Add("5", "All");
-        clauseArray = await Http.GetFromJsonAsync<Clause[]>("EcData/Clause.json");
+     //   clauseArray = await Http.GetFromJsonAsync<Clause[]>("EcData/Clause.json");
+        file = await Http.GetStreamAsync("EcData/Clause.bin");
+        clauseArray = Serializer.Deserialize<Clause[]>(file);
         engineCode.Clauses = clauseArray.Where(a=>a.CodeNo==CodeNo).ToList();
 
         clauses = EngineCodeModel.OrderedByClauseNo(engineCode.Clauses).ToList();
@@ -598,9 +605,7 @@
                 /// <param name="clauseNo">条款编号</param>
                 protected void DisplayClause(string clauseNo)
                 {                  
-                    #if DEBUG
-                    Thread.Sleep(1000);
-                    #endif
+                   
                     isClauseDisplay = "d-block";
                     isAnnounceDisplay = "d-none";
                     isForewordDisplay = "d-none";
