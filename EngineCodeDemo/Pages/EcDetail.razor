@@ -1,0 +1,704 @@
+﻿@page "/EcDetail/{CodeNo}"  
+@inject HttpClient Http
+@layout EcDetailLayout
+@using System.Text.RegularExpressions
+@inherits MathJaxContentComponent
+
+<div class="text-center h4">@engineCode.Name @CodeNo</div>
+<body>
+    <div class="container navbar navbar-expand-lg">
+        <aside class=" navbar-collapse collapse p-2 border border-1 navbarNav" style="width:300px;height: 80vh;">
+            <ul class="list-unstyled list-group-flush list-group" style="width:95%;height:100%;overflow:auto">
+                <li class="list-group-item list-group-item-action m-0 p-0">
+                    <a class="btn d-block" style="text-align:left" @onclick="DisplayCoverPage">封面</a>
+                </li>
+                <li class="list-group-item list-group-item-action m-0 p-0">
+                    <a class="btn d-block" style="text-align:left" @onclick="DisplayAnnouncement">公告</a>
+                </li>
+                <li class="list-group-item list-group-item-action m-0 p-0">
+                    <a class="btn d-block" style="text-align:left" @onclick="DisplayForeword">前言</a>
+                </li>
+                <li class="list-group-item list-group-item-action text-center h6"><b>规范条款</b></li>
+                @foreach (Clause clause in clauses)
+                {
+                    string[] arrStr = clause.ClauseNo.Split('.');
+                    int length = arrStr.Length;
+
+                    if (length == 1)
+                    {
+                        string fClauseNo = clause.ClauseNo;
+                        string fClauseContent = clause.Content;
+                        string Aid = "A" + fClauseNo;
+                        IList<Clause> clauseList = new List<Clause>();
+                        clauseList = clauses.Where(a => a.ClauseNo.StartsWith(fClauseNo.Replace("附录","") + ".") && (a.ClauseNo.Split('.').Length == 2)).ToList();//二段编号
+                        <li class="list-group-item list-group-item-action m-0 p-0">
+                            @if (clauseList == null)
+                            {
+                                MarkupString fContent = new MarkupString(fClauseContent);
+                                <a class="btn d-block" style="text-align:left" @onclick="() => DisplayClause(fClauseNo)">@fClauseNo @fContent</a>
+                            }
+                            else
+                            {
+                                MarkupString fContent = new MarkupString(fClauseContent);
+                                <button class="btn d-block" style="text-align:left" @onclick="() => DisplayClause(fClauseNo)" data-bs-toggle="collapse" data-bs-target="#@Aid">@fClauseNo @fContent</button>
+                            }
+                            <ul id="@Aid" class="collapse px-3 list-group-flush">
+                                @foreach (var clau in clauseList)
+                                {                                    
+                                    string sClauseNo = clau.ClauseNo;
+                                    string sClauseContent = clau.Content;
+                                    MarkupString sContent = new MarkupString(sClauseContent);
+                                    <li class="list-group-item list-group-item-action m-0 p-0"> <a class="btn d-block" style="text-align:left" @onclick="() => DisplayClause(sClauseNo)">@sClauseNo @sContent</a> </li>
+                                }
+                            </ul>
+                        </li>
+
+                    }
+                }
+            </ul>
+        </aside>
+        <main class="bg-light border border-1" style="flex:80%;height:80vh;overflow:auto">
+            <!--style="flex:79%;height:80vh;overflow:auto"-->
+            <!--Coverpage Start-->
+            <div class="@isCoverPageDisplay p-4">
+                <p class="text-center h4 my-5">@coverpage.CodeLevel</p>
+                <p class="text-center h4 mb-5">@coverpage.CodeName</p>
+                <p class="text-center h5 mb-5">@coverpage.CodeNameWithEnglish</p>
+                <p class="text-center h4 mb-5">@coverpage.CodeNo</p>
+                <p class="h6 my-4" style="margin:0 25%">主编部门：@coverpage.MainEditUnit</p>
+                <p class="h6 mb-4" style="margin:0 25%">批准部门：@coverpage.ApproveUnit</p>
+                <p class="h6 mb-4" style="margin:0 25%">施行日期：@coverpage.ExecuteDate</p>
+
+            </div>
+            <!--Coverpage End-->
+            <!--Announcement Start-->
+            <div class="@isAnnounceDisplay p-4">
+                <p class="text-center h4 my-5">@announ.AnnDept</p>
+                <p class="text-center h6 mb-5">@announ.AnnNo</p>
+                <br />
+                <p class="text-center h6 mb-5">@announ.AnnTitle</p>
+                @{
+                    string sep = "强制性条文";
+                    if (announ.AnnContent != null && announ.AnnContent.Contains(sep))
+                    {
+                        string[] contentArr = announ.AnnContent.Split(sep);
+                        if (contentArr.Length != 0)
+                        {
+                            <p class="d-inline-block px-3" style="text-align: left; white-space: pre-wrap">
+                                @contentArr[0]<a class="btn d-inline text-info" style="margin:auto -15px" @onclick="() => DisplayCompulsiveClause(CodeNo)">强制性条文</a>@contentArr[1]
+                            </p>
+                        }
+                    }
+                    else
+                    {
+                        <p class="px-3">@announ.AnnContent</p>
+                    }
+                }
+                <p class="px-3">@announ.Printer</p>
+                <!--announ.AnnDept 包括‘公告’两个字，用封面中批准单位代替-->
+                <p class="d-flex mt-5 px-3 justify-content-end"><b>@coverpage.ApproveUnit</b></p>
+                <p class="d-flex px-3 justify-content-end">@announ.AnnDate</p>
+            </div>
+            <!--Announcement End-->
+            <!--Foreword Start-->
+            <div class="@isForewordDisplay p-4">
+                <div class="d-block text-center h4 text-primary py-4 sticky-top bg-light">前   言</div>
+                <p class="mt-5 d-inline px-4" style="white-space: pre-wrap">@foreword.Accordingto</p>
+                <br />
+                <p class="d-inline px-4" style="white-space: pre-wrap">@foreword.Process</p>
+                <br />
+                <p class="d-inline">
+                    @{
+                        if (foreword.BriefIntro != null)
+                        {
+                            string[] tpArr = foreword.BriefIntro.Split("<br/>");
+                            for (int i = 0; i < tpArr.Length; i++)
+                            {
+                            <p class="d-inline px-4" style="white-space: pre-wrap">@tpArr[i]</p>
+                            if (i < tpArr.Length - 1)
+                            {
+                                <br />
+                            }
+                        }
+                    }
+                    }
+                    </p>
+                    <br />
+                    <p class="d-inline px-4" style="white-space: pre-wrap">@foreword.ExplainService</p>
+                    <br />
+                    <p class="d-inline px-4">
+                        @{
+                            if (foreword.MainEditUnit != null)
+                            {
+                                string[] tpArr = foreword.MainEditUnit.Split("<br/>");
+                                for (int i = 0; i < tpArr.Length; i++)
+                                {
+                                    if (i == 0)
+                                    {
+                                    <p class="d-inline px-2" style="white-space: pre-wrap"> <p class="d-inline visible">主编单位：</p> @tpArr[i]</p>
+                                }
+                                else
+                                {
+                                    <p class="d-inline px-4" style="white-space: pre-wrap"> <p class="d-inline invisible">主编单位：</p> @tpArr[i]</p>
+                                }
+                                if (i != tpArr.Length - 1)
+                                {
+                                    <br />
+                                }
+
+                            }
+                        }
+                        }
+                        </p>
+                        <br />
+                        <p class="d-inline px-4">
+
+                            @{
+                                if (foreword.EditUnit != null)
+                                {
+                                    string[] tpArr = foreword.EditUnit.Split("<br/>");
+                                    for (int i = 0; i < tpArr.Length; i++)
+                                    {
+                                        if (i == 0)
+                                        {
+                                        <p class="d-inline px-2" style="white-space: pre-wrap"><p class="d-inline visible">参编单位：</p>@tpArr[i]</p>
+                                    }
+                                    else
+                                    {
+                                        <p class="d-inline px-4" style="white-space: pre-wrap"><p class="d-inline invisible"> 参编单位：</p>@tpArr[i]</p>
+                                    }
+                                    if (i < tpArr.Length - 1)
+                                    {
+                                        <br />
+                                    }
+                                }
+                            }
+                            }
+
+                            </p>
+                            <br />
+                            <p class="d-inline px-4">起草人员：@foreword.MainEditStaff</p>
+                            <br />
+                            <p class="d-inline px-4">审查人员：@foreword.AuditStaff</p>
+                        </div>
+                        <!--Foreword End-->
+                        <!--CompulsiveClause Start-->
+                        <div class="@isCompulsiveClauseDisplay">
+                            @{
+                                if (compulsiveClauses.Count == 0)
+                                {
+                                    <div class="text-info h5 text-center">本规范无强制性条款</div>
+                                }
+                                else
+                                {//All
+                                    ICollection<Clause> gClauses = new List<Clause>();
+                                    gClauses = compulsiveClauses.Where(c => c.Specility.ToString() == "All").ToList();
+                                    if (gClauses.Count != 0)
+                                    {
+                                        <button class="btn btn-outline-danger d-block h3 text-center mx-auto my-3" data-bs-toggle="collapse" data-bs-target="#general"><b>全专业强制性条文</b></button>
+                                    }
+                                    <div id="general" class="collapse">
+                                        @foreach (var item in gClauses)
+                                        {
+                                            string clauseNoId = "C" + item.ClauseNo.Replace(".", "");
+                                            List<string> imageKeys = imageContents.Keys.Where(a => a.StartsWith(CodeNo + item.ClauseNo)).ToList();
+                                            foreach (var key in imageKeys)
+                                            {
+                                                string oldValue = key + "$";
+                                                item.Content = item.Content.Replace(oldValue, imageContents[key]);
+                                                item.Explanation = item.Explanation.Replace(oldValue, imageContents[key]);
+                                            }
+                                            MarkupString resultTxt1 = new MarkupString(item.Content);
+                                            string hasExplaination = item.Explanation.Length < 2 ? "hidden" : "visible";
+                                            MarkupString resultTxt2 = new MarkupString(item.Explanation);
+                                            <div style="text-align: left; white-space: pre-wrap">
+                                                <svg data-bs-toggle="collapse" data-bs-target="#@clauseNoId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                                </svg>@resultTxt1
+                                            </div>
+
+                                            <div id="@clauseNoId" class="collapse shadow p-2 text-info" style="white-space:pre-wrap">
+                                                @resultTxt2
+                                            </div>
+                                            <br />
+                                        }
+                                    </div>
+
+                                    //Architecture
+                                    ICollection<Clause> aClauses = new List<Clause>();
+                                    aClauses = compulsiveClauses.Where(c => c.Specility.ToString() == "Architecture").ToList();
+                                    if (aClauses.Count != 0)
+                                    {
+                                        <button class="btn btn-outline-danger d-block h3 text-center mx-auto my-3" data-bs-toggle="collapse" data-bs-target="#architecture"><b>建筑专业强制性条文</b></button>
+                                    }
+                                    <div id="architecture" class="collapse">
+                                        @foreach (var item in aClauses)
+                                        {
+                                            string clauseNoId = "C" + item.ClauseNo.Replace(".", "");
+                                            List<string> imageKeys = imageContents.Keys.Where(a => a.StartsWith(CodeNo + item.ClauseNo)).ToList();
+                                            foreach (var key in imageKeys)
+                                            {
+                                                string oldValue = key + "$";
+                                                item.Content = item.Content.Replace(oldValue, imageContents[key]);
+                                                item.Explanation = item.Explanation.Replace(oldValue, imageContents[key]);
+                                            }
+                                            MarkupString resultTxt1 = new MarkupString(item.Content);
+                                            string hasExplaination = item.Explanation.Length < 2 ? "hidden" : "visible";
+                                            MarkupString resultTxt2 = new MarkupString(item.Explanation);
+                                            <div style="text-align: left; white-space: pre-wrap">
+                                                <svg data-bs-toggle="collapse" data-bs-target="#@clauseNoId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                                </svg>@resultTxt1
+                                            </div>
+                                            <div id="@clauseNoId" class="collapse shadow p-2 text-info" style="white-space:pre-wrap">
+                                                @resultTxt2
+                                            </div>
+                                            <br />
+                                        }
+                                    </div>
+
+                                    //Structure
+                                    ICollection<Clause> sClauses = new List<Clause>();
+                                    sClauses = compulsiveClauses.Where(c => c.Specility.ToString() == "Structure").ToList();
+                                    if (sClauses.Count != 0)
+                                    {
+                                        <button class="btn btn-outline-danger d-block h3 text-center mx-auto my-3" data-bs-toggle="collapse" data-bs-target="#structure"><b>结构专业强制性条文</b></button>
+                                    }
+                                    <div id="structure" class="collapse">
+                                        @foreach (var item in sClauses)
+                                        {
+                                            string clauseNoId = "C" + item.ClauseNo.Replace(".", "");
+                                            List<string> imageKeys = imageContents.Keys.Where(a => a.StartsWith(CodeNo + item.ClauseNo)).ToList();
+                                            foreach (var key in imageKeys)
+                                            {
+                                                string oldValue = key + "$";
+                                                item.Content = item.Content.Replace(oldValue, imageContents[key]);
+                                                item.Explanation = item.Explanation.Replace(oldValue, imageContents[key]);
+                                            }
+                                            MarkupString resultTxt1 = new MarkupString(item.Content);
+                                            string hasExplaination = item.Explanation.Length < 2 ? "hidden" : "visible";
+                                            MarkupString resultTxt2 = new MarkupString(item.Explanation);
+                                        <div style="text-align:left">
+                                            <svg data-bs-toggle="collapse" data-bs-target="#@clauseNoId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                            </svg>@resultTxt1
+                                            <div id="@clauseNoId" class="collapse shadow p-2 text-info" style="white-space:pre-wrap">
+                                                @resultTxt2
+                                            </div>
+                                        </div>
+                                            <br />
+                                        }
+                                    </div>
+
+                                    //Water
+                                    ICollection<Clause> wClauses = new List<Clause>();
+                                    wClauses = compulsiveClauses.Where(c => c.Specility.ToString() == "Water").ToList();
+                                    if (wClauses.Count != 0)
+                                    {
+                                        <button class="btn btn-outline-danger d-block h3 text-center mx-auto my-3" data-bs-toggle="collapse" data-bs-target="#water"><b>给排水专业强制性条文</b></button>
+                                    }
+                                    <div id="water" class="collapse">
+                                        @foreach (var item in wClauses)
+                                        {
+                                            string clauseNoId = "C" + item.ClauseNo.Replace(".", "");
+                                            List<string> imageKeys = imageContents.Keys.Where(a => a.StartsWith(CodeNo + item.ClauseNo)).ToList();
+                                            foreach (var key in imageKeys)
+                                            {
+                                                string oldValue = key + "$";
+                                                item.Content = item.Content.Replace(oldValue, imageContents[key]);
+                                                item.Explanation = item.Explanation.Replace(oldValue, imageContents[key]);
+                                            }
+                                            MarkupString resultTxt1 = new MarkupString(item.Content);
+                                            string hasExplaination =item.Explanation.Length < 2 ? "hidden" : "visible";
+                                            MarkupString resultTxt2 = new MarkupString(item.Explanation);
+                                            <div style="text-align: left; white-space: pre-wrap">
+                                                <svg data-bs-toggle="collapse" data-bs-target="#@clauseNoId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                                </svg>@resultTxt1
+                                            </div>
+
+                                            <div id="@clauseNoId" class="collapse shadow p-2 text-info" style="white-space:pre-wrap">
+                                                @resultTxt2
+                                            </div>
+                                            <br />
+                                        }
+                                    </div>
+
+                                    //Electrical
+                                    ICollection<Clause> eClauses = new List<Clause>();
+                                    eClauses = compulsiveClauses.Where(c => c.Specility.ToString() == "Electrical").ToList();
+                                    if (eClauses.Count != 0)
+                                    {
+                                        <button class="btn btn-outline-danger d-block h3 text-center mx-auto my-3" data-bs-toggle="collapse" data-bs-target="#electrical"><b>电气专业强制性条文</b></button>
+                                    }
+                                    <div id="electrical" class="collapse">
+                                        @foreach (var item in eClauses)
+                                        {
+                                            string clauseNoId = "C" + item.ClauseNo.Replace(".", "");
+                                            List<string> imageKeys = imageContents.Keys.Where(a => a.StartsWith(CodeNo + item.ClauseNo)).ToList();
+                                            foreach (var key in imageKeys)
+                                            {
+                                                string oldValue = key + "$";
+                                                item.Content = item.Content.Replace(oldValue, imageContents[key]);
+                                                item.Explanation = item.Explanation.Replace(oldValue, imageContents[key]);
+                                            }
+                                            MarkupString resultTxt1 = new MarkupString(item.Content);
+                                            string hasExplaination = item.Explanation.Length < 2 ? "hidden" : "visible";
+                                            MarkupString resultTxt2 = new MarkupString(item.Explanation);
+                                            <div style="text-align: left; white-space: pre-wrap">
+                                                <svg data-bs-toggle="collapse" data-bs-target="#@clauseNoId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                                </svg>@resultTxt1
+                                            </div>
+                                            <div id="@clauseNoId" class="collapse shadow p-2 text-info" style="white-space:pre-wrap">
+                                                @resultTxt2
+                                            </div>
+                                            <br />
+                                        }
+                                    </div>
+
+                                    //Ventilation
+                                    ICollection<Clause> vClauses = new List<Clause>();
+                                    vClauses = compulsiveClauses.Where(c => c.Specility.ToString() == "Ventilation").ToList();
+                                    if (vClauses.Count != 0)
+                                    {
+                                        <button class="btn btn-outline-danger d-block h3 text-center mx-auto my-3" data-bs-toggle="collapse" data-bs-target="#ventilation"><b>暖通专业强制性条文</b></button>
+                                    }
+                                    <div id="ventilation" class="collapse">
+                                        @foreach (var item in vClauses)
+                                        {
+                                            string clauseNoId = "C" + item.ClauseNo.Replace(".", "");
+                                            List<string> imageKeys = imageContents.Keys.Where(a => a.StartsWith(CodeNo + item.ClauseNo)).ToList();
+                                            foreach (var key in imageKeys)
+                                            {
+                                                string oldValue = key + "$";
+                                                item.Content = item.Content.Replace(oldValue, imageContents[key]);
+                                                item.Explanation = item.Explanation.Replace(oldValue, imageContents[key]);
+                                            }
+                                            MarkupString resultTxt1 = new MarkupString(item.Content);
+                                            string hasExplaination = item.Explanation.Length < 2 ? "hidden" : "visible";
+                                            MarkupString resultTxt2 = new MarkupString(item.Explanation);
+                                            <div style="text-align: left; white-space: pre-wrap">
+                                                <svg data-bs-toggle="collapse" data-bs-target="#@clauseNoId" visibility="@hasExplaination" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+                                                </svg>@resultTxt1
+                                            </div>
+
+                                            <div id="@clauseNoId" class="collapse shadow p-2 text-info" style="white-space:pre-wrap">
+                                                @resultTxt2
+                                            </div>
+                                            <br />
+                                        }
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <!--CompulsiveClause End-->
+                        <!--Clause Start-->
+                        <div class="@isClauseDisplay">
+                            @{
+                                if (clauseList.Count > 0)
+                                {
+                                    string[] segs = clauseList[0].ClauseNo.Split('.');
+                                    string segTmp = segs[0];
+                                    //附录中有三种:1 没有条款号;2 没有二段号 A.0.1,b.0.3;3 有二段号 C.1,C.1.2
+                                    if (!segs[0].Contains("附录") && Regex.IsMatch(segs[0], @"[A-Z]+"))//第3种 有二段号 C.1,C.1.2
+                                        segTmp = "附录" + segs[0];
+                                    string fContent = clauses.FirstOrDefault(c => c.ClauseNo == segTmp).Content.Replace("d-none", "");//附录中第1种，置换”d-none“
+                                    
+                                    MarkupString mkContent = new MarkupString(fContent);
+                                    <div class="d-block text-center h5 text-primary pt-4 sticky-top bg-light">
+                                        @segs[0] @mkContent
+                                        @if (segs.Length > 1)
+                                        {
+                                            Clause tmp = clauses.FirstOrDefault(c => c.ClauseNo == segs[0] + "." + segs[1]);
+                                            if (tmp != null)
+                                            {
+                                                <small class="d-block text-center h6 my-0 py-2 ">@(segs[0]+"."+segs[1]) @tmp.Content</small>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            clauseList.Remove(clauseList[0]);//删除 "附录A"
+                                        }
+
+                        </div>
+                    }
+                    foreach (var clause in clauseList)
+                    {                 
+
+                        string[] idArr = clause.ClauseNo.Split('.');
+                        string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
+                        MarkupString resultTxt1 = new MarkupString(clause.Content);
+                        bool hasExplaination = clause.Explanation.Length < 2 ? false : true;                        
+                        MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
+                        <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">  
+                            @{
+                                if(hasExplaination)
+                                {                                   
+                                    if(!iconDic.Keys.Contains(collapseId))                                              
+                                        iconDic.Add(collapseId, "images/chevron-right.svg");                                  
+                                    <img src=@iconDic[collapseId] width="16" height="16" data-bs-toggle="collapse" data-bs-target="#@collapseId"
+                                    @onclick="@(e=>iconDic[collapseId]= iconDic[collapseId]=="images/chevron-right.svg" ? "images/chevron-down.svg":"images/chevron-right.svg")">@resultTxt1               
+                                
+                            }                          
+                            else
+                            {
+                                <img src="images/chevron-down.svg" width="16" height="16" style="visibility:hidden" > @resultTxt1 //class="visibility-hidden"
+                            }        
+                        
+                        }
+                                      
+                        </div>
+                        if(hasExplaination)
+                          {
+                             <div id="@collapseId" style="text-align: left; white-space: pre-wrap" class="collapse shadow px-4 text-info">
+                             @resultTxt2
+                             </div>       
+                           }
+                                    
+                                    <br />
+                                }
+                            }
+                        </div>                   
+                       
+                        <!--Clause End-->
+                    </main>
+                </div>
+            </body>
+            @code
+{
+
+    [Parameter]
+    public string CodeNo { get; set; }
+    public EngineCodeModel engineCode = new EngineCodeModel();
+    public Coverpage coverpage = new Coverpage();
+    public ICollection<Clause> clauses = new List<Clause>();
+    public ICollection<Clause> compulsiveClauses = new List<Clause>();
+    public Foreword foreword = new Foreword();
+    public Announcement announ = new Announcement();
+    public string isCoverPageDisplay;
+    public string isAnnounceDisplay;
+    public string isForewordDisplay;
+    public string isClauseDisplay;
+    public string isCompulsiveClauseDisplay;
+    public Dictionary<string, string> imageContents = new Dictionary<string, string>();//条款前图标 key=collapsedId value="images/cheverot-right.svg"
+    public IList<Clause> clauseList = new List<Clause>();  
+    public Dictionary<string, string> iconDic = new Dictionary<string, string>();
+    protected override async Task OnInitializedAsync()
+    {       
+        EngineCodeModel[] engineCodeModels;
+        var file = await Http.GetStreamAsync("EcData/EngineCodeModel.bin");
+        engineCodeModels = Serializer.Deserialize<EngineCodeModel[]>(file);
+        engineCode = engineCodeModels.FirstOrDefault(a=>a.CodeNo==CodeNo);        
+
+        //封面
+        Coverpage[] coverpages;
+        file = await Http.GetStreamAsync("EcData/Coverpage.bin");
+        coverpages =Serializer.Deserialize<Coverpage[]>(file);
+        engineCode.Coverpage = coverpages.FirstOrDefault(a=>a.CodeNo==CodeNo);
+        coverpage = engineCode.Coverpage;
+
+
+        //前言
+        Foreword[] forewords;
+        file =await Http.GetStreamAsync("EcData/Foreword.bin");
+        forewords =Serializer.Deserialize<Foreword[]>(file);
+        engineCode.Foreword = forewords.FirstOrDefault(a=>a.CodeNo==CodeNo);
+        foreword.Accordingto = " " + engineCode.Foreword.Accordingto;
+        foreword.Process = " " + engineCode.Foreword.Process;
+        foreword.BriefIntro = " " + engineCode.Foreword.BriefIntro;
+        foreword.ExplainService = " " + engineCode.Foreword.ExplainService;
+        foreword.MainEditUnit = " " + engineCode.Foreword.MainEditUnit;
+        foreword.EditUnit = " " + engineCode.Foreword.EditUnit;
+        foreword.MainEditStaff = " " + engineCode.Foreword.MainEditStaff;
+        foreword.AuditStaff = " " + engineCode.Foreword.AuditStaff;
+
+
+        //公告
+        Announcement[] announcements;
+
+        file = await Http.GetStreamAsync("EcData/Announcement.bin");
+        announcements = Serializer.Deserialize<Announcement[]>(file);
+        engineCode.Announcement=announcements.FirstOrDefault(a=>a.CodeNo==CodeNo); 
+        announ=engineCode.Announcement;     
+
+
+        //条款
+        Clause[] clauseArray;
+        Dictionary<string, string> speciality = new Dictionary<string, string>();
+        speciality.Add("0", "Architecture");
+        speciality.Add("1", "Structure");
+        speciality.Add("2", "Electrical");
+        speciality.Add("3", "Water");
+        speciality.Add("4", "Ventilation");
+        speciality.Add("5", "All");
+     //   clauseArray = await Http.GetFromJsonAsync<Clause[]>("EcData/Clause.json");
+        file = await Http.GetStreamAsync("EcData/Clause.bin");
+        clauseArray = Serializer.Deserialize<Clause[]>(file);
+        engineCode.Clauses = clauseArray.Where(a=>a.CodeNo==CodeNo).ToList();
+
+        clauses = EngineCodeModel.OrderedByClauseNo(engineCode.Clauses).ToList();
+
+        foreach (var item in clauses)
+        {
+            item.Specility = speciality[item.Specility];
+
+            if (item.ClauseNo.Split('.').Length > 2)
+            {
+                string[] contentArr = item.Content.Split("<br/>");
+                string newContent = "<div style='display: inline'>" + item.ClauseNo +  contentArr[0];
+                for (int i = 1; i < contentArr.Length; i++)
+                {
+                    newContent = newContent + "<br/>" + "<div style = 'display: inline;visibility: hidden'>" + item.ClauseNo + "</div>" + contentArr[i];
+                }
+                newContent += "</div>";
+                item.Content = newContent;
+            }
+        }
+        AddCompulsoriveMark(clauses);
+
+
+        //显示内容设置
+        isCoverPageDisplay = "d-block";
+        isAnnounceDisplay = "d-none";
+        isForewordDisplay = "d-none";
+        isClauseDisplay = "d-none";
+        isCompulsiveClauseDisplay = "d-none";
+
+    }
+
+  
+
+                protected void DisplayCoverPage()
+                {
+                    isAnnounceDisplay = "d-none";
+                    isForewordDisplay = "d-none";
+                    isCoverPageDisplay = "d-block";
+                    isClauseDisplay = "d-none";
+                    isCompulsiveClauseDisplay = "d-none";
+                }
+
+                protected void DisplayAnnouncement()
+                {
+                    isClauseDisplay = "d-none";
+                    isAnnounceDisplay = "d-block";
+                    isForewordDisplay = "d-none";
+                    isCoverPageDisplay = "d-none";
+                    isCompulsiveClauseDisplay = "d-none";
+                }
+                protected void DisplayForeword()
+                {
+                    isClauseDisplay = "d-none";
+                    isAnnounceDisplay = "d-none";
+                    isForewordDisplay = "d-block";
+                    isCoverPageDisplay = "d-none";
+                    isCompulsiveClauseDisplay = "d-none";
+                }
+
+
+                /// <summary>
+                /// Main显示的为三段编号的内容
+                /// 根据边菜单选择条款号一段或二段，得到显示的条款(编号为三段）内容：
+                /// 选择单端编号没有二段编号
+                /// </summary>
+                /// <param name="clauseNo">条款编号</param>
+                protected void DisplayClause(string clauseNo)
+                {                  
+                   
+                    isClauseDisplay = "d-block";
+                    isAnnounceDisplay = "d-none";
+                    isForewordDisplay = "d-none";
+                    isCoverPageDisplay = "d-none";
+                    isCompulsiveClauseDisplay = "d-none";
+                    //附录
+                    if (clauseNo.Contains("附录"))
+                    {
+                        string no = clauseNo.Replace("附录", "");//附录A=>A 附录B=>B
+                                                               //附录第二段一般为'0'
+                        clauseList = clauses.Where(a => a.ClauseNo.Split('.').Length == 2 && a.ClauseNo.StartsWith(no + ".")).ToList();
+                        if (clauseList.Count != 0)//如果有第二段，点第一段只是弹开在aside第二段，不需要在main中显示第三段内容
+                            clauseList.Clear();
+                        else
+                        {
+                            clauseList = clauses.Where(a => a.ClauseNo.Contains(no + ".0.")).ToList();
+                            Clause index = clauses.FirstOrDefault(c => c.ClauseNo == clauseNo);
+                            clauseList.Insert(0, index);
+                        }
+                        return;
+                    }
+                    //总则，术语等没有二段编号内容只包括三段编号
+                    if (clauseNo.Split('.').Length == 1)
+                    {
+                        clauseList = clauses.Where(a => a.ClauseNo.Split('.').Length == 2 && a.ClauseNo.StartsWith(clauseNo + ".")).ToList();
+                        if (clauseList.Count != 0)//如果有第二段，点第一段只是弹开在aside第二段，不需要在main中显示第三段内容
+                            clauseList.Clear();
+                        else
+                            clauseList = clauses.Where(a => a.ClauseNo.StartsWith(clauseNo + ".0.")).ToList();
+                        return;
+                    }
+                    //二段编号，如3.2，下一级三段编号肯定包括3.2.
+                    if (clauseNo.Split('.').Length == 2)
+
+                        clauseList = clauses.Where(a => a.ClauseNo.StartsWith(clauseNo + ".")).ToList();
+
+                }
+
+                protected void DisplayCompulsiveClause(string codeNo)
+                {
+                    isClauseDisplay = "d-none";
+                    isAnnounceDisplay = "d-none";
+                    isForewordDisplay = "d-none";
+                    isCoverPageDisplay = "d-none";
+                    isCompulsiveClauseDisplay = "d-block";
+                    //强条编号之间以;分割开 2.3.2;3.4.1;11.0.1(1)....
+                    compulsiveClauses.Clear();
+                    foreach (var item in clauses)
+                    {
+                        if (item.Content.Contains("<b>") && item.Content.Contains("</b>"))
+                            compulsiveClauses.Add(item);
+                    }
+
+
+                }
+                /// <summary>
+                /// 给强条条文增加<b>,</b>,分两种情况：1 全部条款为强条只要在条文前部和尾部增加<b>和</b>；
+                /// 2 只有分条款为强条，在分条款号前增加<b>,在下一个条款号强增加</b>，如是最后一条分
+                /// 条款则在最后增加</b>
+                /// </summary>
+                /// <param name="clauseCol">本规范所有条款</param>
+                protected void AddCompulsoriveMark(ICollection<Clause> clauseCol)
+                {
+
+                    if (!string.IsNullOrEmpty(engineCode.Compulsory))
+                    {
+                        string[] compulArr = engineCode.Compulsory.Split(';');
+                        foreach (string item in compulArr)
+                        {
+                            IList<string> clauseNoArr = item.Trim(')').Split('.', '(', ',').ToList();//11.0.1(1,3) First remove end ),then split by . , and ( to array of string
+                            Clause clause = clauseCol.FirstOrDefault(c => c.ClauseNo == clauseNoArr[0] + "." + clauseNoArr[1] + "." + clauseNoArr[2]);
+                            if (clause != null)
+                            {
+                                if (clauseNoArr.Count > 3)//条文部分为强条
+                                {
+                                    string content = clause.Content;
+                                    for (int i = 3; i < clauseNoArr.Count; i++)
+                                    {
+                                        content = content.Replace("  " + clauseNoArr[i] + " ", "  " + "<b>" + clauseNoArr[i] + " ");//分条款号特征：条款分号前两空格，后一个空格；在条款分号前增加<b>
+                                        int nextNo = int.Parse(clauseNoArr[i]) + 1;//下一条分款号，如强条分款号为3 ，下一个为4
+                                        string content1 = content.Replace("  " + nextNo + " ", "</b>" + "  " + nextNo + " ");//在下一个分款号前增加</b>
+                                        if (content1 != content)
+                                            content = content1;//找到了下一个分款号，替换成功
+                                        else
+                                            content = content + "</b>";//没有找到，最后一条分款号，无下一个分款号，则在整个条文加</b>
+                                    }
+                                    clause.Content = content;
+                                }
+                                else //条文全部为强条
+                                    clause.Content = "<b>" + clause.Content + "</b>";
+                            }
+                        }
+                    }
+                }
+
+            }
