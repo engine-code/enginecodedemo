@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using ProtoBuf;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace enginecodedemo.Shared
 {
+    [ProtoContract]
     public class EngineCodeModel
     {
-        [Key]
+        [ProtoMember(1)]
         public string CodeNo { get; set; }
+        [ProtoMember(2)]
 
         public string Name { get; set; }
+        [ProtoMember(3)]
         public string Compulsory { get; set; }
+        [ProtoMember(4)]
         public string Category { get; set; }
-       
+        [ProtoMember(5)]
+
         public Coverpage Coverpage { get; set; }
+        [ProtoMember(6)]
         public Announcement Announcement { get; set; }
+        [ProtoMember(7)]
         public Foreword Foreword { get; set; }
+        [ProtoMember(8)]
 
         public  ICollection<Clause> Clauses { get; set; }
         //The order way by every segments value.In general: 2,10,3 order result is 10,2,3
@@ -87,7 +95,7 @@ namespace enginecodedemo.Shared
         }
 
     }
-
+    /*
     public enum CategoryEnum
     {
         [Display(Name = "全部")]
@@ -111,5 +119,5 @@ namespace enginecodedemo.Shared
         [Display(Name = "市政")]
         Mucinicipal
     }
-
+    */
 }
