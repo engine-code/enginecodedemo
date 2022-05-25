@@ -8,27 +8,34 @@ using System.Threading.Tasks;
 namespace enginecodedemo.Shared
 {
     [ProtoContract]
+    public class Catalog
+    {       
+        [ProtoMember(1)]
+        public Dictionary<string,string>? Codes { get; set; }
+    }
+
+    [ProtoContract]
     public class EngineCodeModel
     {
         [ProtoMember(1)]
-        public string CodeNo { get; set; }
+        public string ? CodeNo { get; set; }
         [ProtoMember(2)]
 
-        public string Name { get; set; }
+        public string ? Name { get; set; }
         [ProtoMember(3)]
-        public string Compulsory { get; set; }
+        public string ? Compulsory { get; set; }
         [ProtoMember(4)]
-        public string Category { get; set; }
+        public string ? Category { get; set; }
         [ProtoMember(5)]
 
-        public Coverpage Coverpage { get; set; }
+        public Coverpage? Coverpage { get; set; }
         [ProtoMember(6)]
-        public Announcement Announcement { get; set; }
+        public Announcement? Announcement { get; set; }
         [ProtoMember(7)]
-        public Foreword Foreword { get; set; }
+        public Foreword? Foreword { get; set; }
         [ProtoMember(8)]
 
-        public  ICollection<Clause> Clauses { get; set; }
+        public  ICollection<Clause> ?Clauses { get; set; }
         //The order way by every segments value.In general: 2,10,3 order result is 10,2,3
         //In fact the result should be 2,3,10,the below order way:2,10,3=>02,10,03,then get
         //the result 2,3,10
