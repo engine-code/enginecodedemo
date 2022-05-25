@@ -5,7 +5,7 @@
 @using ProtoBuf
 <div class="text-center h4">工程规范一览表 </div>
 
-@if (engineCodes == null)
+@if (catalog == null)
 {
     <p><em>正在加载....</em></p>
 }
@@ -15,23 +15,23 @@ else
         <table class="table border-bottom">
             <thead>
                 <tr>
-                    <th>规范编号</th>
-                    <th>规范名称</th>                  
+                    <th>规范名称</th>
+                    <th>规范编号</th>                  
                         <th></th>                  
                 </tr>
             </thead>
             <tbody>
-                @foreach (var engineCode in engineCodes)
+                @foreach (var key in catalog.Codes.Keys)
                 {
                     <tr>
-                        <td>
-                            @engineCode.CodeNo
+                         <td>
+                            @catalog.Codes[key]
                         </td>
                         <td>
-                            @engineCode.Name
-                        </td>
+                            @key
+                        </td>                       
                         <td>                         
-                            <a href="/enginecodedemo/EcDetail/@engineCode.CodeNo">详情</a>                       
+                            <a href="/enginecodedemo/EcDetail/@key">详情</a>                       
                         </td>
                     </tr>
                 }
@@ -41,13 +41,13 @@ else
 
         @code 
 {
-    private EngineCodeModel[] engineCodes;
-    public string messgae = "";
+    private Catalog? catalog;
+    public string ? messgae = "";
     protected override async Task OnInitializedAsync()
     {
 
-        var file = await Http.GetStreamAsync("EcData/EngineCodeModel.bin");
-        engineCodes = Serializer.Deserialize<EngineCodeModel[]>(file);
+        var file = await Http.GetStreamAsync("EcData/Catalog.bin");
+        catalog = Serializer.Deserialize<Catalog>(file);
     }//   engineCodes = await Http.GetFromJsonAsync<EngineCodeModel[]>("EcData/EngineCodeModel.json");
         }
         

@@ -1,4 +1,4 @@
-﻿@page "/EcDetail/{CodeNo}"  
+﻿@page "/enginecodedemo/EcDetail/{CodeNo}"  
 @inject HttpClient Http
 @layout EcDetailLayout
 @using System.Text.RegularExpressions
@@ -469,41 +469,30 @@
 {
 
     [Parameter]
-    public string CodeNo { get; set; }
+    public string ?  CodeNo { get; set; }
     public EngineCodeModel engineCode = new EngineCodeModel();
     public Coverpage coverpage = new Coverpage();
     public ICollection<Clause> clauses = new List<Clause>();
     public ICollection<Clause> compulsiveClauses = new List<Clause>();
     public Foreword foreword = new Foreword();
     public Announcement announ = new Announcement();
-    public string isCoverPageDisplay;
-    public string isAnnounceDisplay;
-    public string isForewordDisplay;
-    public string isClauseDisplay;
-    public string isCompulsiveClauseDisplay;
+    public string ? isCoverPageDisplay;
+    public string ? isAnnounceDisplay;
+    public string ? isForewordDisplay;
+    public string ? isClauseDisplay;
+    public string ? isCompulsiveClauseDisplay;
     public Dictionary<string, string> imageContents = new Dictionary<string, string>();//条款前图标 key=collapsedId value="images/cheverot-right.svg"
     public IList<Clause> clauseList = new List<Clause>();  
     public Dictionary<string, string> iconDic = new Dictionary<string, string>();
     protected override async Task OnInitializedAsync()
     {       
-        EngineCodeModel[] engineCodeModels;
-        var file = await Http.GetStreamAsync("EcData/EngineCodeModel.bin");
-        engineCodeModels = Serializer.Deserialize<EngineCodeModel[]>(file);
-        engineCode = engineCodeModels.FirstOrDefault(a=>a.CodeNo==CodeNo);        
+     
+        var file = await Http.GetStreamAsync("EcData/"+CodeNo+".bin");
+        engineCode = Serializer.Deserialize<EngineCodeModel>(file);          
 
-        //封面
-        Coverpage[] coverpages;
-        file = await Http.GetStreamAsync("EcData/Coverpage.bin");
-        coverpages =Serializer.Deserialize<Coverpage[]>(file);
-        engineCode.Coverpage = coverpages.FirstOrDefault(a=>a.CodeNo==CodeNo);
+     
         coverpage = engineCode.Coverpage;
-
-
-        //前言
-        Foreword[] forewords;
-        file =await Http.GetStreamAsync("EcData/Foreword.bin");
-        forewords =Serializer.Deserialize<Foreword[]>(file);
-        engineCode.Foreword = forewords.FirstOrDefault(a=>a.CodeNo==CodeNo);
+     
         foreword.Accordingto = " " + engineCode.Foreword.Accordingto;
         foreword.Process = " " + engineCode.Foreword.Process;
         foreword.BriefIntro = " " + engineCode.Foreword.BriefIntro;
@@ -515,33 +504,25 @@
 
 
         //公告
-        Announcement[] announcements;
-
-        file = await Http.GetStreamAsync("EcData/Announcement.bin");
-        announcements = Serializer.Deserialize<Announcement[]>(file);
-        engineCode.Announcement=announcements.FirstOrDefault(a=>a.CodeNo==CodeNo); 
+     
         announ=engineCode.Announcement;     
 
 
         //条款
-        Clause[] clauseArray;
+    //    List<Clause> clauseArray;
         Dictionary<string, string> speciality = new Dictionary<string, string>();
         speciality.Add("0", "Architecture");
         speciality.Add("1", "Structure");
         speciality.Add("2", "Electrical");
         speciality.Add("3", "Water");
         speciality.Add("4", "Ventilation");
-        speciality.Add("5", "All");
-     //   clauseArray = await Http.GetFromJsonAsync<Clause[]>("EcData/Clause.json");
-        file = await Http.GetStreamAsync("EcData/Clause.bin");
-        clauseArray = Serializer.Deserialize<Clause[]>(file);
-        engineCode.Clauses = clauseArray.Where(a=>a.CodeNo==CodeNo).ToList();
+        speciality.Add("5", "All");    
 
         clauses = EngineCodeModel.OrderedByClauseNo(engineCode.Clauses).ToList();
 
         foreach (var item in clauses)
         {
-            item.Specility = speciality[item.Specility];
+       //     item.Specility = speciality[item.Specility];
 
             if (item.ClauseNo.Split('.').Length > 2)
             {

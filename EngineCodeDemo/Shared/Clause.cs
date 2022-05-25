@@ -10,15 +10,15 @@ namespace enginecodedemo.Shared
     public class Clause
     {
         [ProtoMember(1)]
-        public string CodeNo { get; set; }
+        public string ? CodeNo { get; set; }
         [ProtoMember(2)]
-        public string ClauseNo { get; set; }
+        public string ? ClauseNo { get; set; }
         [ProtoMember(3)]
-        public string Content { get; set; }
+        public string ? Content { get; set; }
         [ProtoMember(4)]
-        public string Explanation { get; set; }
+        public string ? Explanation { get; set; }
         [ProtoMember(5)]
-        public string Specility { get; set; }        
+        public string ? Specility { get; set; }        
     }
     /*
         
