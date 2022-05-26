@@ -33,11 +33,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-C2LG1QXcibhlf1swV0KkdjxwyN\/1ep+ryF26oSP\/pVg=",
+      "hash": "sha256-oudhoKVOL4ppMNbuYU0VQfFI5yFx\/QhUa0TbMO\/52TE=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-hCfmohGCZKieb9Pg+ck1Ze9zqahjho3A+cJPp6s7dKg=",
+      "hash": "sha256-1vi6ITEGpGgrnk8einiv\/KiD2iKC4Eax1Pjykm2XfKo=",
       "url": "_framework\/enginecodedemo.dll"
     },
     {
@@ -2193,5 +2193,5 @@
       "url": "manifest.json"
     }
   ],
-  "version": "h6zpreOI"
+  "version": "9zadfpt5"
 };
