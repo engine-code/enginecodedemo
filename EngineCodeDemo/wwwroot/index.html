@@ -8,8 +8,7 @@
     <base href="/enginecodedemo/" />
     <script>
         var base = document.getElementsByTagName('base')[0];
-        if (window.location.hostname == 'localhost')
-        {
+        if (window.location.hostname == 'localhost') {
             base.setAttribute('href', '/');
         }
     </script>
@@ -21,8 +20,8 @@
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
-    <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-    </script>
+    <script type="text/javascript" src="_content/MathJaxBlazor/mathJaxBlazor.js"></script>
+    <script id="MathJax-script" async src="https://cdn.bootcss.com/mathjax/3.0.5/es5/tex-mml-chtml.js"></script>    
     <script src="_framework/blazor.webassembly.js"></script>
 </head>
 
@@ -34,7 +33,7 @@
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>    
-    <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>navigator.serviceWorker.register('service-worker.js');</script>   
 </body>
 
 </html>

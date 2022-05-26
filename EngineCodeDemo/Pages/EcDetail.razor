@@ -2,7 +2,7 @@
 @inject HttpClient Http
 @layout EcDetailLayout
 @using System.Text.RegularExpressions
-
+@inherits MathJaxContentComponent
 <div class="text-center h4">@engineCode.Name @CodeNo</div>
 <body>
     <div class="container navbar navbar-expand-lg">
@@ -638,7 +638,6 @@
                         if (item.Content.Contains("<b>") && item.Content.Contains("</b>"))
                             compulsiveClauses.Add(item);
                     }
-
 
                 }
                 /// <summary>
