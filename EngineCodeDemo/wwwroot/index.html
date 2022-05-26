@@ -5,7 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>工程规范</title>
-    <base href="/" />
+    <base href="/enginecodedemo/" />
+    <script>
+        var base = document.getElementsByTagName('base')[0];
+        if (window.location.hostname == 'localhost')
+        {
+            base.setAttribute('href', '/');
+        }
+    </script>
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
@@ -13,7 +20,7 @@
     <link href="enginecodedemo.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />    
+    <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png" />
     <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
     </script>
     <script src="_framework/blazor.webassembly.js"></script>
