@@ -1457,11 +1457,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-TKaIVDZcXho1KHZFo7eNKJpvWtWLED\/ahf0HQZWEY\/4=",
+      "hash": "sha256-0j+EACYr+lu2YSONIKieiBHHgd58MFlYtWwIUXkwqL4=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-2S+Px\/UrpJEua9rVAY61qF2cxmmkgvfu+edRPRjM3T4=",
+      "hash": "sha256-84aXEr8IyHfdY5KaF9QxiUgFEChTFX13HTtRO8Qljb0=",
       "url": "_framework\/enginecodedemo.dll"
     },
     {
@@ -1661,5 +1661,5 @@
       "url": "_content\/MathJaxBlazor\/mathJaxBlazor.js.map"
     }
   ],
-  "version": "GYAY8RMg"
+  "version": "L8ycRGVB"
 };
