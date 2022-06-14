@@ -7,7 +7,7 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "enginecodedemo.dll": "sha256-0R+v8vFgfeBkp6KUEYfWH+k20JZhdGF96GeWrc8ZMxo=",
+      "enginecodedemo.dll": "sha256-2S+Px\/UrpJEua9rVAY61qF2cxmmkgvfu+edRPRjM3T4=",
       "MathJaxBlazor.dll": "sha256-391gaRojLopufL2AzeNchlkMnENLQKLiyw0SEp1hz8U=",
       "Microsoft.AspNetCore.Components.dll": "sha256-zK6TDZnJ1P0NBqmz8NRZ1gtASArSdnY0RqUsiNsWx4o=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-J56CIqNtJKqXm6dWMAhvRI23W5p7RnErlWEDZVcwjV0=",
