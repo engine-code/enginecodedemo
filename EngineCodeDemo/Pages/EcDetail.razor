@@ -1,4 +1,4 @@
-﻿@page "/EcDetail/{CodeNo}"  
+﻿@page "/enginecodedemo/EcDetail/{CodeNo}"  
 @inject HttpClient Http
 @layout EcDetailLayout
 @using System.Text.RegularExpressions
@@ -405,15 +405,17 @@
                                         segTmp = "附录" + segs[0];
                                     string fContent = clauses.FirstOrDefault(c => c.ClauseNo == segTmp).Content.Replace("d-none", "");//附录中第1种，置换”d-none“
                                     
-                                    MarkupString mkContent = new MarkupString(fContent);
+                                    MarkupString mkContent = new MarkupString(fContent.Replace("<img src=\"","<img src=\"/images/")
+                        .Replace("$\"  class=",".png\"  class="));
                                     <div class="d-block text-center h5 text-primary pt-4 sticky-top bg-light">
                                         @segs[0] @mkContent
                                         @if (segs.Length > 1)
                                         {
-                                            Clause tmp = clauses.FirstOrDefault(c => c.ClauseNo == segs[0] + "." + segs[1]);
+                                            Clause tmp = clauses.FirstOrDefault(c => c.ClauseNo == segs[0] + "." + segs[1]);                               
                                             if (tmp != null)
                                             {
-                                                <small class="d-block text-center h6 my-0 py-2 ">@(segs[0]+"."+segs[1]) @tmp.Content</small>
+                                                 string tmpContent = tmp.Content.Replace("<img src=\"", "<img src=\"/images/").Replace("$\"  class=", ".png\"  class=");
+                                                <small class="d-block text-center h6 my-0 py-2 ">@(segs[0]+"."+segs[1]) @tmpContent</small>
                                             }
                                         }
                                         else
@@ -428,9 +430,12 @@
 
                         string[] idArr = clause.ClauseNo.Split('.');
                         string collapseId = "B" + idArr[0] + idArr[1] + idArr[2];
-                        MarkupString resultTxt1 = new MarkupString(clause.Content);
+                        MarkupString resultTxt1 = new MarkupString(clause.Content.Replace("<img src=\"","<img src=\"/images/")
+                        .Replace("$\"  class=",".png\"  class="));//<img src=" ==> <img src="/images/ $"  class= ==> .png  class=
                         bool hasExplaination = clause.Explanation.Length < 2 ? false : true;                        
-                        MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" + clause.Explanation+"</div>");
+                        MarkupString resultTxt2 = new MarkupString("<div style='display: inline'>" +
+                        clause.Explanation.Replace("<img src=\"","<img src=\"/images/")
+                        .Replace("$\"  class=",".png\"  class=")+"</div>");//<img src=" ==> <img src="/images/ $"  class= ==> .png  class=
                         <div class="px-2 py-0" style="text-align: left; white-space: pre-wrap">  
                             @{
                                 if(hasExplaination)
