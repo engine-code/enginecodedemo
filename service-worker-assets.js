@@ -49,7 +49,7 @@
       "url": "css\/open-iconic\/README.md"
     },
     {
-      "hash": "sha256-J557WDF\/YMO0ZVcQAd5D16cDWq3M7vLlCaOPsDKpX0U=",
+      "hash": "sha256-7uRkQgrbErVcw0VJvQXMZ8bSoHqR92qaNbRmT4k7WfE=",
       "url": "EcData\/Catalog.bin"
     },
     {
@@ -77,7 +77,7 @@
       "url": "EcData\/GB 50055-2011.bin"
     },
     {
-      "hash": "sha256-qLsbCPsuWpLouA2A0kFBNZ+stTY23iJbPCWymzdf4T4=",
+      "hash": "sha256-cElhQww+S5Sll54A+wKwMc2HDqEvoqr5mIKMXthgN7w=",
       "url": "EcData\/GB 50084-2017.bin"
     },
     {
@@ -95,6 +95,10 @@
     {
       "hash": "sha256-MMMoJEbOpOj7i8ADY3UDnTNvI\/AsSKjNGmOSNHfz8SA=",
       "url": "EcData\/GB 51251-2017.bin"
+    },
+    {
+      "hash": "sha256-1pViS8JDV4ei8U2ZLbG95YTD6JYfw+MXd+EJV0i\/MVk=",
+      "url": "EcData\/GB 55002-2021.bin"
     },
     {
       "hash": "sha256-EYOVgFOCOXL8aWl7NQZUrs\/CZJBAgeBmkeJGxGnBZvY=",
@@ -115,6 +119,10 @@
     {
       "hash": "sha256-E4JKeKuwVULQVkoKKyt\/EagJ0pM48xeuqb4ZIPKy1Wg=",
       "url": "EcData\/GB 55020-2021.bin"
+    },
+    {
+      "hash": "sha256-vmBw\/YBT+OioMwel0B3JYbDCeeubhNsvrmkysB21KYs=",
+      "url": "EcData\/GB 55024-2022.bin"
     },
     {
       "hash": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
@@ -1422,7 +1430,7 @@
     },
     {
       "hash": "sha256-WYno\/cK5MDsl5yi4T\/\/QgUskbBfhLL77i+c0uKzO9+c=",
-      "url": "_framework\/dotnet.6.0.4.mxtu8g02x8.js"
+      "url": "_framework\/dotnet.6.0.4.a3x2hyo668.js"
     },
     {
       "hash": "sha256-IAZQkATPLfknBs7WdmI3T1SiL6xDp4WjMEnYenpVpcE=",
@@ -1449,11 +1457,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-6FyOoC4GwnAyH+gh9T93dqmiUFvs+vbJ3Ac0U4xmD7E=",
+      "hash": "sha256-ClBIOXI6wRO6yr51I1V2CjinKhS0RrTR7nswbPBf+eI=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-zZlHmkYX+M5c1xgLiqCi439SRiew1p3thhJXTv6MD3I=",
+      "hash": "sha256-YqQtwQwukynFWmCSMAsdzC8wY3ufoEXv\/kBeTA6vkwY=",
       "url": "_framework\/enginecodedemo.dll"
     },
     {
@@ -1653,5 +1661,5 @@
       "url": "_content\/MathJaxBlazor\/mathJaxBlazor.js.map"
     }
   ],
-  "version": "FJnIzeF+"
+  "version": "exlrBokQ"
 };
