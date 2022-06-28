@@ -97,7 +97,7 @@
       "url": "EcData\/GB 51251-2017.bin"
     },
     {
-      "hash": "sha256-v3i3IWfhnp2jsNYE+y7N+1cjb2z4u7iQsK+Lx1u2FrE=",
+      "hash": "sha256-ARxJRXVt9NulKIW1SL+LUVFagbouwRzgQnZExgB6awY=",
       "url": "EcData\/GB 51348-2019.bin"
     },
     {
@@ -113,7 +113,7 @@
       "url": "EcData\/GB 55015-2021.bin"
     },
     {
-      "hash": "sha256-zjhwGKM7iBXBw61xN906nrOx1uc2PnyZbgYCzU+2o5M=",
+      "hash": "sha256-7pI170SVHW0YJ\/xJyyCVIUCgo\/Seb46qpYIxDgymgeY=",
       "url": "EcData\/GB 55016-2021.bin"
     },
     {
@@ -121,7 +121,7 @@
       "url": "EcData\/GB 55019-2021.bin"
     },
     {
-      "hash": "sha256-iQUR4EMuhgchjdddPkfqxMXRKUGxE7kl4gHSOAw3qYs=",
+      "hash": "sha256-tUqZHjr8wOZFFVNUkSmsp9k0oTXVjm7c9U52xuzkvxw=",
       "url": "EcData\/GB 55020-2021.bin"
     },
     {
@@ -1345,6 +1345,22 @@
       "url": "images\/GB 51348-20197.4.401E.png"
     },
     {
+      "hash": "sha256-+kB+DZVl686DGV7jCyLtmE\/AXcXMGLGZfsGFM5mwsNw=",
+      "url": "images\/GB 51348-20199.2.1201E.png"
+    },
+    {
+      "hash": "sha256-xKxkz0QtUoXd2xovymzv3zRiO\/uFx+8MQ4bdZCr\/D3Q=",
+      "url": "images\/GB 51348-20199.2.1202E.png"
+    },
+    {
+      "hash": "sha256-zfEPfUm9Gu2X82lTlJ6NCxsy\/QABM7v1o4cNHOtFtiM=",
+      "url": "images\/GB 51348-20199.2.2301E.png"
+    },
+    {
+      "hash": "sha256-7+4zOMRqD8yRk6AdBMxBF6xDZb3LsJqkz7Fvy1P6Nxg=",
+      "url": "images\/GB 51348-20199.2.701E.png"
+    },
+    {
       "hash": "sha256-ywVuv2mPPT+pKSWEfC9IKvH6D1snI0b757MtDcJegHI=",
       "url": "images\/GB 55015-2021B.0.401E.png"
     },
@@ -1681,5 +1697,5 @@
       "url": "_content\/MathJaxBlazor\/mathJaxBlazor.js.map"
     }
   ],
-  "version": "u0EMJ\/ZR"
+  "version": "NXVsHoXw"
 };
