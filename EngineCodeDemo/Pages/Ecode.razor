@@ -1,4 +1,4 @@
-﻿@page "/Ecode"
+﻿@page "/"
 @inject HttpClient Http
 @layout MainLayout
 @using System.Security.Claims
@@ -15,9 +15,9 @@ else
         <table class="table border-bottom">
             <thead>
                 <tr>
-                    <th>规范名称</th>
-                    <th>规范编号</th>                  
-                        <th></th>                  
+                    <th>规范名称</th>                    
+                    <th>规范编号</th>              
+                    <th></th>        
                 </tr>
             </thead>
             <tbody>
@@ -25,13 +25,16 @@ else
                 {
                     <tr>
                          <td>
-                            @catalog.Codes[key]
+                             <a class="btn d-block" style="text-align:left" href="/enginecodedemo/EcDetail/@key">
+                            @catalog.Codes[key]</a>
                         </td>
+                        
                         <td>
-                            @key
-                        </td>                       
+                            <a class="btn d-block" style="text-align:left" href="/enginecodedemo/EcDetail/@key">
+                            @key</a>
+                        </td>                   
                         <td>                         
-                            <a href="/enginecodedemo/EcDetail/@key">详情</a>                       
+                            <a class="btn d-block" style="text-align:left" href="/enginecodedemo/EcDetail/@key">详情</a>                       
                         </td>
                     </tr>
                 }
