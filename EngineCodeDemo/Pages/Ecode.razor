@@ -51,6 +51,7 @@ else
 
         var file = await Http.GetStreamAsync("EcData/Catalog.bin");
         catalog = Serializer.Deserialize<Catalog>(file);
-    }//   engineCodes = await Http.GetFromJsonAsync<EngineCodeModel[]>("EcData/EngineCodeModel.json");
+       catalog.Codes= catalog.Codes.OrderByDescending(a => a.Key).ToDictionary(a=>a.Key,a=>a.Value);
+    }
         }
         
