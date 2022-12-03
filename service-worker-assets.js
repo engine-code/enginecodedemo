@@ -49,7 +49,7 @@
       "url": "css\/open-iconic\/README.md"
     },
     {
-      "hash": "sha256-5z8+hB5v\/pKUdABF+rmrpSj9G4UnxFu3L\/\/vb3XfEUk=",
+      "hash": "sha256-5pOk8IPYBUZOjTKT+GLxZj7CpYNuosfJAJMZtY93TkA=",
       "url": "EcData\/Catalog.bin"
     },
     {
@@ -127,6 +127,10 @@
     {
       "hash": "sha256-tUqZHjr8wOZFFVNUkSmsp9k0oTXVjm7c9U52xuzkvxw=",
       "url": "EcData\/GB 55020-2021.bin"
+    },
+    {
+      "hash": "sha256-Qm8a\/CVXI45uSBrlDadhd9szKrTG3+JqV3VCGS9dKa0=",
+      "url": "EcData\/GB 55021-2021.bin"
     },
     {
       "hash": "sha256-MheBP+SCVxykN+S5WPOt44p7z4POPXPq6zBpYqHRsR4=",
@@ -1973,5 +1977,5 @@
       "url": "_content\/MathJaxBlazor\/mathJaxBlazor.js.map"
     }
   ],
-  "version": "rGC57ItA"
+  "version": "3gbcDa2p"
 };
