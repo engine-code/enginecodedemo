@@ -49,7 +49,7 @@
       "url": "css\/open-iconic\/README.md"
     },
     {
-      "hash": "sha256-5pOk8IPYBUZOjTKT+GLxZj7CpYNuosfJAJMZtY93TkA=",
+      "hash": "sha256-6kT3JkQ7AxeAMev0iO2cKLgDUysdhsI30xSMtv3Z7ak=",
       "url": "EcData\/Catalog.bin"
     },
     {
@@ -155,6 +155,10 @@
     {
       "hash": "sha256-k9oyynKcn94siBsaG1y7CgKjEt+HnVY6BDhz04cEBzM=",
       "url": "EcData\/GB 55036-2022.bin"
+    },
+    {
+      "hash": "sha256-VDwhho7BQr5E\/im3dmQxhE2VlR3OzYQW4e8rKgXIXIY=",
+      "url": "EcData\/GB 55037-2022.bin"
     },
     {
       "hash": "sha256-Jtxf9L+5ITKRc1gIRl4VbUpGkRNfOBXjYTdhJD4facM=",
@@ -1977,5 +1981,5 @@
       "url": "_content\/MathJaxBlazor\/mathJaxBlazor.js.map"
     }
   ],
-  "version": "3gbcDa2p"
+  "version": "1I3maSgi"
 };
