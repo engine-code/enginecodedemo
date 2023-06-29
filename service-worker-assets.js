@@ -49,7 +49,7 @@
       "url": "css\/open-iconic\/README.md"
     },
     {
-      "hash": "sha256-6kT3JkQ7AxeAMev0iO2cKLgDUysdhsI30xSMtv3Z7ak=",
+      "hash": "sha256-gKP2mzpM7kXQ41oWtdxln5f3c5I1Ki1+BpjACPT6p\/o=",
       "url": "EcData\/Catalog.bin"
     },
     {
@@ -143,6 +143,10 @@
     {
       "hash": "sha256-\/ioaPMwokKxshb1HVLoM3TMCOr0NWR67DvyqcvZ8YA4=",
       "url": "EcData\/GB 55029-2022.bin"
+    },
+    {
+      "hash": "sha256-7BCyMvyymb4BEua5JmSXR\/tcTv4XjyzLJRplXR+qeS8=",
+      "url": "EcData\/GB 55030-2022.bin"
     },
     {
       "hash": "sha256-DFgP3K8WsrmkthkqbH4yypAv7EPbwqRYkzoF72vRIxM=",
@@ -1821,11 +1825,11 @@
       "url": "_framework\/icudt_no_CJK.dat"
     },
     {
-      "hash": "sha256-EEYiFkR4xly1UM64YUoNbQDj8NKb1+c79qmk2patSCw=",
+      "hash": "sha256-tWgvv22fZ\/OwR6XvB9Bdc+iICKLgg9h1OaZ5TA0f9GU=",
       "url": "_framework\/blazor.boot.json"
     },
     {
-      "hash": "sha256-I8WakaYA7hypqK9PmLy\/JeWRaTqTzLwJr5CW7LW0JI0=",
+      "hash": "sha256-KN6\/PQj7Hh4gql\/6SLAtGxFRalD4K6d9pLojFTgmeJY=",
       "url": "_framework\/enginecodedemo.dll"
     },
     {
@@ -2025,5 +2029,5 @@
       "url": "_content\/MathJaxBlazor\/mathJaxBlazor.js.map"
     }
   ],
-  "version": "E52noRph"
+  "version": "q67EIONn"
 };
